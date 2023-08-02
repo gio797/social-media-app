@@ -2,7 +2,7 @@ import React from "react";
 import "./rightBar.scss";
 
 function RightBar() {
-  return <div>RightBar</div>;
+  return <div className="rightBar">RightBar</div>;
 }
 
 export default RightBar;
