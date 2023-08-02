@@ -86,6 +86,42 @@ function LeftBar() {
             <img src={Fund} alt="" />
             <span>Fund</span>
           </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
+          <div className="item">
+            <img src={Fund} alt="" />
+            <span>Fund</span>
+          </div>
         </div>
       </div>
     </div>
