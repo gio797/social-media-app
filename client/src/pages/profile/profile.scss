@@ -34,9 +34,9 @@
         padding: 10px;
       }
 
-      // @include tablet {
-      //   padding: 20px;
-      // }
+      @include tablet {
+        padding: 20px;
+      }
 
       .uInfo {
         height: 180px;
@@ -64,9 +64,9 @@
           display: flex;
           gap: 10px;
 
-          //   @include tablet {
-          //     flex-wrap: wrap;
-          //   }
+          @include tablet {
+            flex-wrap: wrap;
+          }
 
           a {
             color: themed("textColorSoft");

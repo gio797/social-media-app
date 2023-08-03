@@ -11,6 +11,10 @@
     justify-content: space-between;
   }
 
+  @include tablet {
+    height: 150px;
+  }
+
   .story {
     flex: 1;
     border-radius: 10px;
