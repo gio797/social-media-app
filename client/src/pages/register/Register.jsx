@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import "./register.scss";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Register() {
+  const [inputs, setInputs] = useState({
+    username: "",
+    email: "",
+    password: "",
+    name: "",
+  });
+
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    setInputs((prevInputs) => ({
+      ...prevInputs,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post("http://localhost:8800/api/auth/register", inputs);
+    } catch (err) {
+      setError(err.response.data);
+    }
+  };
+
   return (
     <div className="register">
       <div className="card">
@@ -21,16 +48,36 @@ function Register() {
         <div className="right">
           <h1>Register</h1>
           <form action="">
-            <input type="text" name="" id="Username" placeholder="Username" />
-            <input type="email" name="" id="email" placeholder="Email" />
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Username"
+              onChange={handleChange}
+            />
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
+              onChange={handleChange}
+            />
             <input
               type="password"
-              name=""
-              id="Password"
+              name="password"
+              id="password"
               placeholder="Password"
+              onChange={handleChange}
             />
-            <input type="text" name="" id="name" placeholder="Name" />
-            <button>Register</button>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Name"
+              onChange={handleChange}
+            />
+            {error && error}
+            <button onClick={handleClick}>Register</button>
           </form>
         </div>
       </div>
