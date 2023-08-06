@@ -11,9 +11,20 @@ const Share = () => {
   const [file, setFile] = useState(null);
   const [desc, setDesc] = useState("");
 
-  const { currentUser } = useContext(AuthContext);
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await makeRequest.post("/upload", formData);
 
-  const queryClient = new useQueryClient();
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const { currentUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
   const mutation = useMutation(
     (newPost) => {
@@ -22,27 +33,37 @@ const Share = () => {
     {
       onSuccess: () => {
         // Invalidate and refetch
-        queryClient.invalidateQueries("posts");
+        queryClient.invalidateQueries(["posts"]);
       },
     }
   );
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    mutation.mutate({ desc });
+    let imgUrl = "";
+    if (file) imgUrl = await upload();
+    mutation.mutate({ desc, img: imgUrl });
+    setDesc("");
+    setFile(null);
   };
 
   return (
     <div className="share">
       <div className="container">
         <div className="top">
-          <img src={currentUser.profilePic} alt="" />
-          <input
-            type="text"
-            name="desc"
-            placeholder={`What's on your mind ${currentUser.name}?`}
-            onChange={(e) => setDesc(e.target.value)}
-          />
+          <div className="left">
+            <img src={currentUser.profilePic} alt="" />
+            <input
+              type="text"
+              name="desc"
+              placeholder={`What's on your mind ${currentUser.name}?`}
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+            />
+          </div>
+          <div className="right">
+            {file && <img className="file" src={URL.createObjectURL(file)} />}
+          </div>
         </div>
         <hr />
         <div className="bottom">
@@ -51,7 +72,7 @@ const Share = () => {
               type="file"
               id="file"
               style={{ display: "none" }}
-              onChange={(e) => setDesc(e.target.files[0])}
+              onChange={(e) => setFile(e.target.files[0])}
             />
             <label htmlFor="file">
               <div className="item">
