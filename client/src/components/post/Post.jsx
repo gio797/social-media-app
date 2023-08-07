@@ -6,7 +6,6 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
-// import Comments from "../comments/Comments";
 import { useState } from "react";
 import Comments from "../comments/Comments";
 import moment from "moment";
@@ -53,7 +52,7 @@ function Post({ post }) {
             Share
           </div>
         </div>
-        {commentOpen && <Comments />}
+        {commentOpen && <Comments postId={post.id} />}
       </div>
     </div>
   );
