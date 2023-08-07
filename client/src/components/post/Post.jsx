@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 // import Comments from "../comments/Comments";
 import { useState } from "react";
 import Comments from "../comments/Comments";
+import moment from "moment";
 
 function Post({ post }) {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -29,7 +30,7 @@ function Post({ post }) {
               >
                 <span className="name">{post.name}</span>
               </Link>
-              <span className="date">1 min age</span>
+              <span className="date">{moment(post.createdAt).fromNow()}</span>
             </div>
           </div>
           <MoreHorizIcon />
