@@ -3,7 +3,7 @@ import Image from "../../assets/img.png";
 import Map from "../../assets/map.png";
 import Friend from "../../assets/friend.png";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useMutation, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios.js";
 

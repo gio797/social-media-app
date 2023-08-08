@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./post.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
@@ -9,12 +9,39 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Comments from "../comments/Comments";
 import moment from "moment";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { makeRequest } from "../../axios.js";
+import { AuthContext } from "../../context/AuthContext";
 
 function Post({ post }) {
   const [commentOpen, setCommentOpen] = useState(false);
 
-  //temporary
-  const liked = false;
+  const { currentUser } = useContext(AuthContext);
+
+  const { isLoading, error, data } = useQuery(["likes", post.id], () =>
+    makeRequest.get(`/likes?postId=${post.id}`).then((res) => {
+      return res.data;
+    })
+  );
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    (liked) => {
+      if (liked) return makeRequest.delete(`/likes?postId=${post.id}`);
+      return makeRequest.post("/likes", { postId: post.id });
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["likes"]);
+      },
+    }
+  );
+
+  const handleLike = () => {
+    mutation.mutate(data.includes(currentUser.id));
+  };
 
   return (
     <div className="post">
@@ -40,8 +67,17 @@ function Post({ post }) {
         </div>
         <div className="info">
           <div className="item">
-            {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-            12 likes
+            {isLoading ? (
+              "loading"
+            ) : data.includes(currentUser.id) ? (
+              <FavoriteOutlinedIcon
+                style={{ color: "red" }}
+                onClick={handleLike}
+              />
+            ) : (
+              <FavoriteBorderOutlinedIcon onClick={handleLike} />
+            )}
+            {isLoading ? "loading" : data.length} likes
           </div>
           <div className="item" onClick={() => setCommentOpen((prev) => !prev)}>
             <TextsmsOutlinedIcon />
