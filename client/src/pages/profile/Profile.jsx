@@ -19,14 +19,23 @@ function Profile() {
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
 
-  console.log(userId);
-  console.log(currentUser.id);
-
   const { isLoading, error, data } = useQuery(["user"], () =>
     makeRequest.get(`/users/find/${userId}`).then((res) => {
       return res.data;
     })
   );
+
+  const { isLoading: rIsLoading, data: relationshipData } = useQuery(
+    ["relationship"],
+    () =>
+      makeRequest.get("/relationships?followedUserId=" + userId).then((res) => {
+        return res.data;
+      })
+  );
+
+  console.log(relationshipData);
+
+  const handleFollow = () => {};
 
   return (
     <div className="profile">
@@ -70,10 +79,16 @@ function Profile() {
                     <span>{data.website}</span>
                   </div>
                 </div>
-                {userId === currentUser.id ? (
+                {rIsLoading ? (
+                  "loading"
+                ) : userId === currentUser.id ? (
                   <button>update</button>
                 ) : (
-                  <button>follow</button>
+                  <button onClick={handleFollow}>
+                    {relationshipData.includes(currentUser.id)
+                      ? "following"
+                      : "follow"}
+                  </button>
                 )}
               </div>
               <div className="right">
