@@ -5,32 +5,9 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { makeRequest } from "../../axios.js";
 
-function Posts() {
-  // const [posts, setPosts] = useState([]);
-
-  // axios
-  //   .get("http://localhost:8800/api/posts")
-  //   .then((res) => setPosts(res.data));
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await axios.get(`http://localhost:8800/api/posts/`);
-  //       setPosts(res.data);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   makeRequest.get("/posts").then((res) => setPosts(res.data));
-  // }, []);
-
-  const { isLoading, error, data } = useQuery("posts", () =>
-    makeRequest.get("/posts").then((res) => {
+function Posts({ userId }) {
+  const { isLoading, error, data } = useQuery(["posts"], () =>
+    makeRequest.get("/posts?userId=" + userId).then((res) => {
       return res.data;
     })
   );
